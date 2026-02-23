@@ -1,0 +1,30 @@
+{% extends 'todo/base.html' %}
+{% block content %}
+
+<h1>My Todo List</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Todo</button>
+</form>
+
+<hr>
+
+{% for todo in todos %}
+<div class="todo-card {% if todo.completed %}completed{% endif %}">
+    <h3>{{ todo.title }}</h3>
+    <p>{{ todo.description }}</p>
+
+    {% if todo.image %}
+        <img src="{{ todo.image.url }}" width="200">
+    {% endif %}
+
+    <div>
+        <a href="{% url 'toggle' todo.id %}">Toggle</a>
+        <a href="{% url 'delete' todo.id %}">Delete</a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
